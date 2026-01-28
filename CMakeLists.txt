@@ -67,7 +67,6 @@ string(REPLACE "#cmakedefine TRE_VERSION_3" "#define TRE_VERSION_3 @TRE_VERSION_
 string(REPLACE "#cmakedefine TRE_VERSION\n" "#define TRE_VERSION \"@TRE_VERSION@\"\n" CONFIG_CONTENT "${CONFIG_CONTENT}")
 
 # Add custom/missing defines
-set(CONFIG_CONTENT "${CONFIG_CONTENT}\n/* Define to ensure locally configured headers are used */\n#define USE_LOCAL_TRE_H 1\n")
 set(CONFIG_CONTENT "${CONFIG_CONTENT}\n/* Define to a field in the regex_t struct where TRE should store a pointer to the internal tre_tnfa_t structure */\n#define TRE_REGEX_T_FIELD value\n")
 
 file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/tre-config.h.cmake" "${CONFIG_CONTENT}")
@@ -110,9 +109,12 @@ set_target_properties(tre PROPERTIES
 
 # Installation rules
 install(TARGETS tre ARCHIVE DESTINATION lib)
-install(FILES 
-    local_includes/tre.h 
-    local_includes/regex.h 
+install(FILES
+    local_includes/regex.h
+    DESTINATION include
+)
+install(FILES
+    local_includes/tre.h
     ${CMAKE_CURRENT_BINARY_DIR}/local_includes/tre-config.h
     DESTINATION include/tre
 )
